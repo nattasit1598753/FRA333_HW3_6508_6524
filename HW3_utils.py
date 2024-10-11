@@ -75,10 +75,3 @@ def FKHW3(q):
 
     return R,P,R_e,p_e
 
-pi = math.pi
-q = [pi/2,0,0]
-R,P,R_e,p_e = FKHW3(q)
-# # print(P)
-# # print(P[:,1])
-# print(p_e)
-print(P)
