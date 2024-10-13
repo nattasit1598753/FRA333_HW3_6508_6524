@@ -28,19 +28,19 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 #=============================================<คำตอบข้อ 2>======================================================#
 #code here
 def checkSingularityHW3(q:list[float])->bool:
-    E = 0.001
-    Jacobian_matrix = endEffectorJacobianHW3(q)
-    det = abs(np.linalg.det(Jacobian_matrix[:3,:]))
-    if det < E:
-        return 1
-    else:
-        return 0
+    E = 0.001 #กำหนดค่า E ตามโจทย์
+    Jacobian_matrix = endEffectorJacobianHW3(q) #เรียกใช้ฟังก์ชั่นหา jacobian ที่เราสร้างไว้
+    det = abs(np.linalg.det(Jacobian_matrix[:3,:])) #หาขนาดของ det ของ jacobian matrix ที่ลดรูปเหลือแค่ linear jacobian
+    if det < E: # หากค่าที่ได้น้อยกว่า E 
+        return 1 #ส่งค่า 1 กลับคือใกล้ติด Singularity
+    else: #หากค่าที่ได้ไม่น้อยกว่า E 
+        return 0 #ส่งค่า 0 กลับคือไม่ติด Singularity
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
     Jacobian_matrix = endEffectorJacobianHW3(q)
     Jacobian_matrix_transposed = np.array(Jacobian_matrix).transpose()
-    Tao = Jacobian_matrix_transposed @ w
-    return Tao
+    Tua = Jacobian_matrix_transposed @ w
+    return -Tua
 #==============================================================================================================#
