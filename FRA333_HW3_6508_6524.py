@@ -15,14 +15,14 @@ pi = math.pi
 #code here
 def endEffectorJacobianHW3(q:list[float])->list[float]:
     R,P,R_e,p_e = FKHW3(q)
-    Jacobian_matrix = np.zeros([6, 3])
-    for i in range(3):
-        p_i = P[:,i]
-        Z_i = R[:,2,i]
-        linear_velocity = np.cross(Z_i, p_e - p_i)
-        Jacobian_matrix[:3, i] = R_e.transpose() @ linear_velocity
-        Jacobian_matrix[3:, i] = R_e.transpose() @ Z_i
-    return Jacobian_matrix
+    Jacobian_matrix = np.zeros([6, 3]) #สร้างเมทริก 6*3 โดยทุกตัวมีค่า 0
+    for i in range(3):#สั่งวนลูป 3 ครั้งเพราะมี 3 joint
+        p_i = P[:,i]#ดึงค่า P ทุกแถวในคอลั่มน์ i
+        Z_i = R[:,2,i]#ดึงค่า R ทุกแถวในคอลั่มน์ 3 ของชุดที่ i
+        linear_jacobian = np.cross(Z_i, p_e - p_i)#ใช้สูตร Zi cross (Pe - Pi) ให้ได้ linear jacobian velocity
+        Jacobian_matrix[:3, i] = R_e.transpose() @ linear_jacobian #ใส่ linear_jacobian เข้าไปใน 3 แถวบนของjacobian matrix และแปลงเฟรมให้เข้าเฟรมe
+        Jacobian_matrix[3:, i] = R_e.transpose() @ Z_i#ใส่ Z_i เข้าไปใน 3 แถวล่างของjacobian matrix และแปลงเฟรมให้เข้าเฟรมe
+    return Jacobian_matrix #ส่งค่า Jacobian_matrix กลับ
     
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 2>======================================================#

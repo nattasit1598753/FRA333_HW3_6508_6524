@@ -75,3 +75,5 @@ def FKHW3(q):
 
     return R,P,R_e,p_e
 
+# q = [0,0,0]
+# print(FKHW3(q))
