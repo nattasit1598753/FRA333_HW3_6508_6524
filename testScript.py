@@ -1,7 +1,6 @@
 # file สำหรับตรวจคำตอบ
 # ในกรณีที่มีการสร้าง function อื่น ๆ ให้ระบุว่า input-output คืออะไรด้วย
 '''
-ชื่อ_รหัส(ex: ธนวัฒน์_6461)
 1.จิรภัทร_6508
 2.ณัฐสิทธิ์_6524
 '''
@@ -48,46 +47,49 @@ robot = rtb.DHRobot(
 #===========================================<ตรวจคำตอบข้อ 2>====================================================#
 #code here
 
-# import random #นำเข้าไลบลารี่ random
-# def random_q(range_start, range_end, array_size):#สร้างฟังก์ชั่นเพื่อสุ่มค่า q
-#   return [random.uniform(range_start, range_end) for _ in range(array_size)]#ส่งค่า q ที่สุ่มแล้วกลับออกมา
+import random #นำเข้าไลบลารี่ random
+import matplotlib.pyplot as plt
 
-# for i in range(10):#วนเพื่อทดสอบเคสต่าง ๆ 10 ครั้ง
-#     q = random_q(0, pi, 3)#สุ่มค่า q ระหว่าง 0 - pi มี array_size 3
-#     print("test case q is", q)#แสดงค่า q ที่สุ่มได้
-#     print("my function flag is", checkSingularityHW3(q))#แสดง flag ที่ได้จากฟังก์ชั่นของตัวเอง
+def random_q(range_start, range_end, array_size):#สร้างฟังก์ชั่นเพื่อสุ่มค่า q
+  return [random.uniform(range_start, range_end) for _ in range(array_size)]#ส่งค่า q ที่สุ่มแล้วกลับออกมา
+
+for i in range(10):#วนเพื่อทดสอบเคสต่าง ๆ 10 ครั้ง
+    q = random_q(0, pi, 3)#สุ่มค่า q ระหว่าง 0 - pi มี array_size 3
+    print("test case q is", q)#แสดงค่า q ที่สุ่มได้
+    print("my function flag is     ", checkSingularityHW3(q))#แสดง flag ที่ได้จากฟังก์ชั่นของตัวเอง
 
 
-#     Jacobian_matrix = robot.jacobe(q)#สร้าง jacobian matrix ด้วย robotics toolbox
-#     det = abs(np.linalg.det(Jacobian_matrix[:3,:]))#
-#     if det < 0.001: # หากค่าที่ได้น้อยกว่า E 
-#         print("robotics toolbox flag is",'1') #แสดง 1 กลับคือใกล้ติด Singularity
-#     else: #หากค่าที่ได้ไม่น้อยกว่า E 
-#         print("robotics toolbox flag is",'0') #แสดง 0 กลับคือไม่ติด Singularity
-#     print("end" , i+1 , "round")#แสดงว่าจบ 1 เคส
+    Jacobian_matrix = robot.jacobe(q)#สร้าง jacobian matrix ด้วย robotics toolbox
+    det = np.linalg.det(Jacobian_matrix[:3,:])#หา det ของ Jacobian matrix ที่ลดรูปแล้วแล้วเหลือแค่ linear jacobian
+    det_norm = np.linalg.norm(det)#หา norm ของ Jacobian matrix
+    if det_norm < 0.001: # หาก det_norm ที่ได้น้อยกว่า E 
+        print("robotics toolbox flag is",'1') #แสดง 1 กลับคือใกล้ติด Singularity
+    else: #หากค่าที่ได้ไม่น้อยกว่า E 
+        print("robotics toolbox flag is",'0','\n') #แสดง 0 กลับคือไม่ติด Singularity
+    
 
 
 #==============================================================================================================#
 #===========================================<ตรวจคำตอบข้อ 3>====================================================#
 # code here
-import random #นำเข้าไลบลารี่ random
-def random_q(range_start, range_end, array_size):#สร้างฟังก์ชั่นเพื่อสุ่มค่า q
-  return [random.uniform(range_start, range_end) for _ in range(array_size)]#ส่งค่า q ที่สุ่มแล้วกลับออกมา
+# import random #นำเข้าไลบลารี่ random
+# def random_q(range_start, range_end, array_size):#สร้างฟังก์ชั่นเพื่อสุ่มค่า q
+#   return [random.uniform(range_start, range_end) for _ in range(array_size)]#ส่งค่า q ที่สุ่มแล้วกลับออกมา
 
-def random_wrench(array_size):
-    wrench = [random.randint(1, 10) for _ in range(array_size - 3)]
-    wrench.extend([0, 0, 0])
-    return wrench
+# def random_wrench(array_size):
+#     wrench = [random.randint(1, 10) for _ in range(array_size - 3)]
+#     wrench.extend([0, 0, 0])
+#     return wrench
 
-for i in range(10):
-    wrench = random_wrench(6)
-    q = random_q(0,pi,3)
-    print("my Tua     ", computeEffortHW3(q, wrench))
-    Jacobian_matrix = robot.jacobe(q)#สร้าง jacobian matrix ด้วย robotics toolbox
-    w = wrench
-    J = Jacobian_matrix
-    Tua_toolbox = robot.pay(w,q,J)
-    print("toolbox Tua", Tua_toolbox)
+# for i in range(10):
+#     wrench = random_wrench(6)
+#     q = random_q(0,pi,3)
+#     print("my Tua     ", computeEffortHW3(q, wrench))
+#     Jacobian_matrix = robot.jacobe(q)#สร้าง jacobian matrix ด้วย robotics toolbox
+#     w = wrench
+#     J = Jacobian_matrix
+#     Tua_toolbox = robot.pay(w,q,J)
+#     print("toolbox Tua", Tua_toolbox)
 
 #==============================================================================================================#
 # robot.plot(q,block=True)

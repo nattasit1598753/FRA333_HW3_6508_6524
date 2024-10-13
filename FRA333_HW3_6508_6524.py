@@ -1,10 +1,8 @@
 # file สำหรับเขียนคำตอบ
 # ในกรณีที่มีการสร้าง function อื่น ๆ ให้ระบุว่า input-output คืออะไรด้วย
 '''
-ชื่อ_รหัส(ธนวัฒน์_6461)
-1.
-2.
-3.
+1.จิรภัทร_6508
+2.ณัฐสิทธิ์_6524
 '''
 
 from HW3_utils import FKHW3
@@ -30,8 +28,9 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 def checkSingularityHW3(q:list[float])->bool:
     E = 0.001 #กำหนดค่า E ตามโจทย์
     Jacobian_matrix = endEffectorJacobianHW3(q) #เรียกใช้ฟังก์ชั่นหา jacobian ที่เราสร้างไว้
-    det = abs(np.linalg.det(Jacobian_matrix[:3,:])) #หาขนาดของ det ของ jacobian matrix ที่ลดรูปเหลือแค่ linear jacobian
-    if det < E: # หากค่าที่ได้น้อยกว่า E 
+    det = np.linalg.det(Jacobian_matrix[:3,:]) #หา det ของ Jacobian matrix ที่ลดรูปแล้วเหลือแค่ linear jacobian
+    det_norm = np.linalg.norm(det)#หา norm ของ Jacobian matrix
+    if det_norm < E: # หาก det_norm ที่ได้น้อยกว่า E 
         return 1 #ส่งค่า 1 กลับคือใกล้ติด Singularity
     else: #หากค่าที่ได้ไม่น้อยกว่า E 
         return 0 #ส่งค่า 0 กลับคือไม่ติด Singularity
@@ -39,8 +38,8 @@ def checkSingularityHW3(q:list[float])->bool:
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
-    Jacobian_matrix = endEffectorJacobianHW3(q)
-    Jacobian_matrix_transposed = np.array(Jacobian_matrix).transpose()
-    Tua = Jacobian_matrix_transposed @ w
-    return -Tua
+    Jacobian_matrix = endEffectorJacobianHW3(q)#เรียกใช้ฟังก์ขั่นสร้าง Jacobian matrix
+    Jacobian_matrix_transposed = np.array(Jacobian_matrix).transpose()#หา Jacobian matrix transpose
+    Tua = Jacobian_matrix_transposed @ w#ใช้สูตร Jacobian matrix transpose dot wrench
+    return -Tua#ส่งกลับค่า Tua เป็นลบเพราะเป็นแรงปฏิกิริยา
 #==============================================================================================================#
